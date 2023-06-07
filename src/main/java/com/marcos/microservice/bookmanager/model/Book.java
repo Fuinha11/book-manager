@@ -1,7 +1,5 @@
 package com.marcos.microservice.bookmanager.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-
 import java.util.List;
 
 public record Book(
@@ -9,7 +7,6 @@ public record Book(
         String title,
         List<Author> authors,
         List<String> languages,
-        @JsonAlias("download_count")
         int downloadCount
 ) {
 }
