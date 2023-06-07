@@ -1,6 +1,6 @@
 package com.marcos.microservice.bookmanager.web;
 
-import com.marcos.microservice.bookmanager.integration.service.GutendexService;
+import com.marcos.microservice.bookmanager.service.BookService;
 import com.marcos.microservice.bookmanager.util.StringUtils;
 import com.marcos.microservice.bookmanager.web.dto.BookSearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BooksController {
 
     @Autowired
-    GutendexService service;
+    BookService service;
 
     @GetMapping("/search")
     public BookSearchResponse searchBooks(@RequestParam("searchTerm") String searchTerm, @RequestParam(value = "page", required = false) Integer page) {
