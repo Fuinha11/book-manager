@@ -1,4 +1,23 @@
 package com.marcos.microservice.bookmanager.service.impl;
 
-public class ReviewServiceImpl {
+import com.marcos.microservice.bookmanager.model.Book;
+import com.marcos.microservice.bookmanager.model.Review;
+import com.marcos.microservice.bookmanager.model.repository.ReviewRepository;
+import com.marcos.microservice.bookmanager.service.ReviewService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ReviewServiceImpl implements ReviewService {
+
+    @Autowired
+    ReviewRepository reviewRepository;
+
+    @Override
+    public Review addReview(Book book, float rating, String review) {
+        if (rating < 0 || rating > 5)
+            throw new RuntimeException();
+
+        return reviewRepository.save( new Review(null, book.id(), rating, review));
+    }
 }

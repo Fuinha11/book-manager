@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "GutendexClient", url = "${gutendex.url}")
 public interface GutendexClient {
 
-    @GetMapping(value = "/books/{id}")
+    @GetMapping(value = "/books/{id}/")
     BookDTO getBook(@PathVariable("id") int id);
 
     @GetMapping(value = "/books?search={search}&page={page}")
