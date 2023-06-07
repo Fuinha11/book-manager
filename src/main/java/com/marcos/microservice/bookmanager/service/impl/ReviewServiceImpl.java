@@ -1,5 +1,6 @@
 package com.marcos.microservice.bookmanager.service.impl;
 
+import com.marcos.microservice.bookmanager.exception.InvalidRatingException;
 import com.marcos.microservice.bookmanager.model.Book;
 import com.marcos.microservice.bookmanager.model.Review;
 import com.marcos.microservice.bookmanager.model.repository.ReviewRepository;
@@ -16,7 +17,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Review addReview(Book book, float rating, String review) {
         if (rating < 0 || rating > 5)
-            throw new RuntimeException();
+            throw new InvalidRatingException();
 
         return reviewRepository.save( new Review(null, book.id(), rating, review));
     }
