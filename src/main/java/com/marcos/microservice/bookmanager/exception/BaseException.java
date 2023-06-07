@@ -1,4 +1,4 @@
 package com.marcos.microservice.bookmanager.exception;
 
-public class BaseException {
+public class BaseException extends RuntimeException {
 }
