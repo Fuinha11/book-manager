@@ -6,9 +6,14 @@ import com.marcos.microservice.bookmanager.service.BookService;
 import com.marcos.microservice.bookmanager.service.ReviewService;
 import com.marcos.microservice.bookmanager.util.StringUtils;
 import com.marcos.microservice.bookmanager.web.dto.AddReviewRequest;
+import com.marcos.microservice.bookmanager.web.dto.BookDetailsResponse;
 import com.marcos.microservice.bookmanager.web.dto.BookSearchResponse;
+import com.marcos.microservice.bookmanager.web.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/books")
@@ -28,9 +33,34 @@ public class BooksController {
         return new BookSearchResponse(bookService.searchBooks(sanitised,page));
     }
 
-    @PostMapping("/{id}/reviews")
-    public Review addReview(@PathVariable("id") int bookId, @RequestBody AddReviewRequest request) {
+    @GetMapping("/{id}")
+    public BookDetailsResponse addReview(@PathVariable("id") int bookId) {
         Book book = bookService.getBookById(bookId);
-        return reviewService.addReview(book, request.getRating(), StringUtils.Sanitise(request.getReview()));
+        List<Review>reviews = reviewService.getReviewsForBook(book);
+        return composeBookDetailsResponse(book, reviews);
+    }
+
+    private BookDetailsResponse composeBookDetailsResponse(Book book, List<Review> reviews) {
+        Float rating = null;
+        if (!reviews.isEmpty()) {
+            float ratingSum = reviews.stream().map(Review::getRating).reduce(0f, Float::sum);
+            rating = ratingSum/reviews.size();
+        }
+        List<String> reviewList = reviews.stream().map(Review::getReview).collect(Collectors.toList());
+        return new BookDetailsResponse(
+                book.id(),
+                book.title(),
+                book.authors(),
+                book.languages(),
+                book.downloadCount(),
+                rating,
+                reviewList
+        );
+    }
+
+    @PostMapping("/{id}/reviews")
+    public ReviewDTO addReview(@PathVariable("id") int bookId, @RequestBody AddReviewRequest request) {
+        Book book = bookService.getBookById(bookId);
+        return new ReviewDTO(reviewService.addReview(book, request.getRating(), StringUtils.Sanitise(request.getReview())));
     }
 }

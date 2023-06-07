@@ -2,8 +2,8 @@ package com.marcos.microservice.bookmanager.service.impl;
 
 import com.marcos.microservice.bookmanager.integration.gutendex.GutendexClient;
 import com.marcos.microservice.bookmanager.integration.gutendex.dto.BookDTO;
-import com.marcos.microservice.bookmanager.service.BookService;
 import com.marcos.microservice.bookmanager.model.Book;
+import com.marcos.microservice.bookmanager.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

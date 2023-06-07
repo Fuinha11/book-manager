@@ -8,6 +8,8 @@ import com.marcos.microservice.bookmanager.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
@@ -20,5 +22,10 @@ public class ReviewServiceImpl implements ReviewService {
             throw new InvalidRatingException();
 
         return reviewRepository.save( new Review(null, book.id(), rating, review));
+    }
+
+    @Override
+    public List<Review> getReviewsForBook(Book book) {
+        return reviewRepository.findAllByBookId(book.id());
     }
 }
